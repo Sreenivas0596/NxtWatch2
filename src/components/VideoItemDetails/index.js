@@ -14,6 +14,7 @@ import {
   MainVideoItemContainer,
   ProfileImg,
   SubscriberContainer,
+  FailureImg,
 } from './styledComponents'
 
 const apiStatusConstants = {
@@ -72,6 +73,8 @@ class VideoItemDetails extends Component {
         allVideoItemDetailsList: updateVideoItemDetailsList,
         apiStatus: apiStatusConstants.success,
       })
+    } else {
+      this.setState({apiStatus: apiStatusConstants.failure})
     }
   }
 
@@ -138,6 +141,24 @@ class VideoItemDetails extends Component {
       </MainVideoItemContainer>
     )
   }
+
+  renderNxtWatchFailureView = () => (
+    <div className="failure-container">
+      <FailureImg
+        src="https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png"
+        alt="failure view"
+      />
+      <h1 className="job-title">Oops! Something went wrong</h1>
+      <p className="address">
+        We are having some trouble to complete your request.Please try again
+      </p>
+      <div>
+        <button type="button" className="button" onClick={this.getAllJobsData}>
+          Retry
+        </button>
+      </div>
+    </div>
+  )
 
   renderVideoItemDetails = () => {
     const {apiStatus} = this.state

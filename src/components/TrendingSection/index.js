@@ -4,7 +4,11 @@ import {HiFire} from 'react-icons/hi'
 import SideBar from '../SideBar'
 import Header from '../Header'
 import TrendingCard from '../TrendingCard'
-import {TrendingContainer, TrendingSectionContainer} from './styledComponents'
+import {
+  TrendingContainer,
+  TrendingSectionContainer,
+  FailureImg,
+} from './styledComponents'
 
 const apiStatusConstants = {
   initial: 'INITIAL',
@@ -55,6 +59,8 @@ class TrendingSection extends Component {
         trendingVideosList: updateTrendingData,
         apiStatus: apiStatusConstants.success,
       })
+    } else {
+      this.setState({apiStatus: apiStatusConstants.failure})
     }
   }
 
@@ -63,6 +69,10 @@ class TrendingSection extends Component {
     console.log(trendingVideosList)
     return (
       <div>
+        <TrendingContainer>
+          <HiFire />
+          <h1> Trending </h1>
+        </TrendingContainer>
         <ul>
           {trendingVideosList.map(eachTrend => (
             <TrendingCard key={eachTrend.id} trendingDetails={eachTrend} />
@@ -72,12 +82,32 @@ class TrendingSection extends Component {
     )
   }
 
+  renderTrendingFailureView = () => (
+    <div className="failure-container">
+      <FailureImg
+        src="https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png"
+        alt="failure view"
+      />
+      <h1 className="job-title">Oops! Something went wrong</h1>
+      <p className="address">
+        We are having some trouble to complete your request.Please try again
+      </p>
+      <div>
+        <button type="button" className="button" onClick={this.getAllJobsData}>
+          Retry
+        </button>
+      </div>
+    </div>
+  )
+
   renderTrendingVideos = () => {
     const {apiStatus} = this.state
 
     switch (apiStatus) {
       case apiStatusConstants.success:
         return this.renderTrendingSuccessView()
+      case apiStatusConstants.failure:
+        return this.renderTrendingFailureView()
 
       default:
         return null
@@ -92,13 +122,7 @@ class TrendingSection extends Component {
           <div>
             <SideBar />
           </div>
-          <div>
-            <TrendingContainer>
-              <HiFire />
-              <h1> Trending </h1>
-            </TrendingContainer>
-            {this.renderTrendingVideos()}
-          </div>
+          <div>{this.renderTrendingVideos()}</div>
         </TrendingSectionContainer>
       </div>
     )

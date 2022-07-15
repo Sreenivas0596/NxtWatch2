@@ -6,13 +6,14 @@ import Header from '../Header'
 import VideoCard from '../VideoCard'
 import SideBar from '../SideBar'
 
-import {HomeContainer, InputButton} from './styledComponents'
+import {HomeContainer, InputButton, FailureImg} from './styledComponents'
 import './index.css'
 
 const apiStatusConstants = {
   initial: 'INITIAL',
-  failure: 'FAILURE',
   inProgress: 'INPROGRESS',
+  failure: 'FAILURE',
+
   success: 'SUCCESS',
 }
 
@@ -28,7 +29,6 @@ class Home extends Component {
   }
 
   getNxtWatchVideos = async () => {
-    const {searchInput} = this.state
     const jwtToken = Cookies.get('jwt_token')
 
     const options = {
@@ -37,7 +37,7 @@ class Home extends Component {
         Authorization: `Bearer ${jwtToken}`,
       },
     }
-
+    const {searchInput} = this.state
     const url = `https://apis.ccbp.in/videos/all?search=${searchInput}`
 
     const response = await fetch(url, options)
@@ -95,18 +95,36 @@ class Home extends Component {
             <BsSearch />
           </InputButton>
         </div>
-        <ul>
+        <div>
           {allNxtWatchVideosList.map(eachVideo => (
             <VideoCard key={eachVideo.id} videoDetails={eachVideo} />
           ))}
-        </ul>
+        </div>
       </div>
     )
   }
 
+  renderNxtWatchFailureView = () => (
+    <div className="failure-container">
+      <FailureImg
+        src="https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png"
+        alt="failure view"
+      />
+      <h1 className="job-title">Oops! Something went wrong</h1>
+      <p className="address">
+        We are having some trouble to complete your request.Please try again
+      </p>
+      <div>
+        <button type="button" className="button" onClick={this.getAllJobsData}>
+          Retry
+        </button>
+      </div>
+    </div>
+  )
+
   renderLoadingView = () => (
     <div className="loader-container" data-testid="loader">
-      <Loader type="ThreeDots" color="#ffffff" height="50" width="50" />
+      <Loader type="ThreeDots" color="#000000" height="50" width="50" />
     </div>
   )
 
@@ -140,7 +158,7 @@ class Home extends Component {
             <div className="nxt-watch-home-container">
               <img
                 src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png"
-                alt=""
+                alt="website logo"
               />
               <p> Buy Nxt Watch Premium Prepaid plans with UPI</p>
               <button type="button"> GET IT NOW</button>

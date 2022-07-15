@@ -32,3 +32,7 @@ export const InputButton = styled.button`
   border-width: 0px;
   cursor: pointer;
 `
+
+export const FailureImg = styled.img`
+  width: 200px;
+`

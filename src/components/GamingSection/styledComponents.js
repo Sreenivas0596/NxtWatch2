@@ -9,3 +9,7 @@ export const TrendingContainer = styled.div`
   justify-content: flex-start;
   align-items: center;
 `
+
+export const FailureImg = styled.img`
+  width: 200px;
+`

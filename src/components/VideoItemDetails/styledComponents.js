@@ -37,3 +37,7 @@ export const ProfileImg = styled.img`
 export const SubscriberContainer = styled.div`
   display: flex;
 `
+
+export const FailureImg = styled.img`
+  width: 200px;
+`

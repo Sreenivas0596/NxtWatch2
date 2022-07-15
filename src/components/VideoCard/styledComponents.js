@@ -23,6 +23,8 @@ export const VideoListContainer = styled.li`
   max-width: 300px;
   list-style-type: none;
   font-family: 'Roboto';
+  margin-top: 15px;
+  margin-bottom: 10px;
 `
 
 export const ProfileHeading = styled.h1`
