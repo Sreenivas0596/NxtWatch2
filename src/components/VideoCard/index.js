@@ -24,7 +24,7 @@ const VideoCard = props => {
 
   const {name, profileImageUrl} = channel
   return (
-    <Link to={`/videos/${id}`}>
+    <Link to={`/videos/${id}`} className="nav-link">
       <VideoListContainer>
         <ThumbnailUrlImg src={thumbnailUrl} alt={title} />
 

@@ -1,11 +1,13 @@
 import {Component} from 'react'
 import Cookies from 'js-cookie'
 import {Loader} from 'react-loader-spinner'
+import {BsSearch} from 'react-icons/bs'
 import Header from '../Header'
 import VideoCard from '../VideoCard'
 import SideBar from '../SideBar'
 
-import {HomeContainer} from './styledComponents'
+import {HomeContainer, InputButton} from './styledComponents'
+import './index.css'
 
 const apiStatusConstants = {
   initial: 'INITIAL',
@@ -81,11 +83,18 @@ class Home extends Component {
 
     return (
       <div>
-        <input
-          type="search"
-          value={searchInput}
-          onChange={this.onChangeInput}
-        />
+        <div className="input-search-container">
+          <input
+            type="search"
+            value={searchInput}
+            onChange={this.onChangeInput}
+            placeholder="Search"
+            className="input"
+          />
+          <InputButton type="button">
+            <BsSearch />
+          </InputButton>
+        </div>
         <ul>
           {allNxtWatchVideosList.map(eachVideo => (
             <VideoCard key={eachVideo.id} videoDetails={eachVideo} />
@@ -127,7 +136,17 @@ class Home extends Component {
           <div>
             <SideBar />
           </div>
-          <div>{this.renderNxtWatchVideos()}</div>
+          <div>
+            <div className="nxt-watch-home-container">
+              <img
+                src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png"
+                alt=""
+              />
+              <p> Buy Nxt Watch Premium Prepaid plans with UPI</p>
+              <button type="button"> GET IT NOW</button>
+            </div>
+            {this.renderNxtWatchVideos()}
+          </div>
         </HomeContainer>
       </div>
     )
