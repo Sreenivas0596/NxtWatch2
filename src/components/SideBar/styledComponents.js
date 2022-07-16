@@ -8,8 +8,9 @@ export const ListSideBarContainer = styled.li`
 `
 
 export const SideBarContainer = styled.div`
-  max-height: 1200px;
+  height: 90vh;
   max-width: 300px;
+  background-color: ${props => (props.isDarkTheme ? '#606060' : '')};
 `
 
 export const SnsContainer = styled.div`

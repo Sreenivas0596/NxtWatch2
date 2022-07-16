@@ -4,7 +4,7 @@ import ReactPlayer from 'react-player'
 import {BsDot} from 'react-icons/bs'
 import {AiOutlineLike, AiOutlineDislike} from 'react-icons/ai'
 import {MdPlaylistAdd} from 'react-icons/md'
-import {formatDistanceToNow} from 'date-fns'
+import {formatDistanceToNowStrict} from 'date-fns'
 import Header from '../Header'
 import {
   ViewDataContainer,
@@ -17,6 +17,9 @@ import {
   FailureImg,
 } from './styledComponents'
 
+import './index.css'
+import NxtWatchContext from '../../NxtWatchContext'
+
 const apiStatusConstants = {
   initial: 'INITIAL',
   failure: 'FAILURE',
@@ -27,7 +30,12 @@ const apiStatusConstants = {
 const apiUrl = 'https://apis.ccbp.in/videos/'
 
 class VideoItemDetails extends Component {
-  state = {allVideoItemDetailsList: {}, apiStatus: apiStatusConstants.initial}
+  state = {
+    allVideoItemDetailsList: {},
+    apiStatus: apiStatusConstants.initial,
+    activeLikeButton: false,
+    activeDislikeButton: false,
+  }
 
   componentDidMount() {
     this.getVideoItemDetails()
@@ -78,8 +86,26 @@ class VideoItemDetails extends Component {
     }
   }
 
+  onClickLikeButton = () => {
+    this.setState(prevState => ({
+      activeLikeButton: !prevState.activeLikeButton,
+      activeDislikeButton: false,
+    }))
+  }
+
+  onClickDislikeButton = () => {
+    this.setState(prevState => ({
+      activeDislikeButton: !prevState.activeDislikeButton,
+      activeLikeButton: false,
+    }))
+  }
+
   renderNxtWatchAllVideoItemDetailsSuccessView = () => {
-    const {allVideoItemDetailsList} = this.state
+    const {
+      allVideoItemDetailsList,
+      activeLikeButton,
+      activeDislikeButton,
+    } = this.state
 
     console.log(allVideoItemDetailsList)
 
@@ -94,51 +120,66 @@ class VideoItemDetails extends Component {
     } = allVideoItemDetailsList
     const {name, profileImageUrl, subscriberCount} = channel
 
+    const activeLike = activeLikeButton ? 'active-like-button' : ''
+    const activeDislike = activeDislikeButton ? 'active-like-button' : ''
+
     return (
-      <MainVideoItemContainer>
-        <div>
-          <ReactPlayer url={videoUrl} width="100%" />
-          <h1>{title}</h1>
-          <ViewDataContainer>
-            <LikeContainer>
-              <p>{viewCount} views </p>
-              <BsDot />
-              <p>{formatDistanceToNow(new Date(publishedAt))}</p>
-            </LikeContainer>
-            <LikeDataContainer>
-              <LikeButton type="button">
-                <LikeContainer>
-                  <AiOutlineLike />
-                  <p> Like </p>
-                </LikeContainer>
-              </LikeButton>
-              <LikeButton type="button">
-                <LikeContainer>
-                  <AiOutlineDislike />
-                  <p> Dislike </p>
-                </LikeContainer>
-              </LikeButton>
-              <LikeButton type="button">
-                <LikeContainer>
-                  <MdPlaylistAdd />
-                  <p> Save </p>
-                </LikeContainer>
-              </LikeButton>
-            </LikeDataContainer>
-          </ViewDataContainer>
-        </div>
-        <hr />
-        <SubscriberContainer>
+      <NxtWatchContext.Consumer>
+        return (
+        <MainVideoItemContainer>
           <div>
-            <ProfileImg src={profileImageUrl} alt={name} />
+            <ReactPlayer url={videoUrl} width="100%" />
+            <h1>{title}</h1>
+            <ViewDataContainer>
+              <LikeContainer>
+                <p>{viewCount} views </p>
+                <BsDot />
+                <p>{formatDistanceToNowStrict(new Date(publishedAt))}</p>
+              </LikeContainer>
+              <LikeDataContainer>
+                <LikeButton
+                  type="button"
+                  className={activeLike}
+                  onClick={this.onClickLikeButton}
+                >
+                  <LikeContainer>
+                    <AiOutlineLike />
+                    <p> Like </p>
+                  </LikeContainer>
+                </LikeButton>
+                <LikeButton
+                  type="button"
+                  className={activeDislike}
+                  onClick={this.onClickDislikeButton}
+                >
+                  <LikeContainer>
+                    <AiOutlineDislike />
+                    <p> Dislike </p>
+                  </LikeContainer>
+                </LikeButton>
+                <LikeButton type="button">
+                  <LikeContainer>
+                    <MdPlaylistAdd />
+                    <p> Save </p>
+                  </LikeContainer>
+                </LikeButton>
+              </LikeDataContainer>
+            </ViewDataContainer>
           </div>
-          <div>
-            <h1>{name}</h1>
-            <p>{subscriberCount} subscribers</p>
-            <p>{description}</p>
-          </div>
-        </SubscriberContainer>
-      </MainVideoItemContainer>
+          <hr />
+          <SubscriberContainer>
+            <div>
+              <ProfileImg src={profileImageUrl} alt={name} />
+            </div>
+            <div>
+              <h1>{name}</h1>
+              <p>{subscriberCount} subscribers</p>
+              <p>{description}</p>
+            </div>
+          </SubscriberContainer>
+        </MainVideoItemContainer>
+        )
+      </NxtWatchContext.Consumer>
     )
   }
 

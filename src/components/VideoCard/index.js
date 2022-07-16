@@ -1,6 +1,6 @@
 import {Link} from 'react-router-dom'
 import {BsDot} from 'react-icons/bs'
-import {formatDistanceToNow} from 'date-fns'
+import {formatDistanceToNowStrict} from 'date-fns'
 
 import {
   ProfileImageContainer,
@@ -39,7 +39,7 @@ const VideoCard = props => {
             <ViewDateContainer>
               <p>{viewCount} views </p>
               <BsDot />
-              <p>{formatDistanceToNow(new Date(publishedAt))}</p>
+              <p>{formatDistanceToNowStrict(new Date(publishedAt))}</p>
             </ViewDateContainer>
           </div>
         </ProfileImageContainer>
